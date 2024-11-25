@@ -47,27 +47,72 @@
                 <img src="/static/img/logo.png" class="img-fluid" />
             </div>
             <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
-                <h1 class="font-weight-bold mb-4">TeLoCambio - Register</h1>
-                <form class="mb-5">
+                <h1 class="font-weight-bold mb-4">TeLoCambio - Registro</h1>
+
+                <!-- Mostrar mensajes dinámicos -->
+                {% if message %}
+                <div class="alert alert-{{ 'success' if success else 'danger' }} text-center" role="alert">
+                    {{ message }}
+                </div>
+                {% endif %}
+
+                <!-- Formulario de registro -->
+                <form id="registerForm" class="mb-5">
                     <div class="mb-4">
-                        <label for="exampleInputEmail1" class="form-label font-weight-bold">Usuario</label>
-                        <input type="email" class="form-control bg-dark-x border-0" id="exampleInputEmail1" placeholder="Ingresa tu usuario" aria-describedby="emailHelp">
+                        <label for="username" class="form-label font-weight-bold">Nombre de usuario</label>
+                        <input type="text" name="username" id="username" class="form-control bg-dark-x border-0"
+                               placeholder="Ingresa tu nombre de usuario" required>
                     </div>
                     <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label font-weight-bold">Contraseña</label>
-                        <input type="password" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa tu contraseña" id="exampleInputPassword1">
-                        <a href="" id="emailHelp" class="form-text text-muted text-decoration-none">Nota: Recuerda anotar tu contraseña en un lugar seguro</a>
+                        <label for="password" class="form-label font-weight-bold">Contraseña</label>
+                        <input type="password" name="password" id="password" class="form-control bg-dark-x border-0 mb-2"
+                               placeholder="Ingresa tu contraseña" minlength="6" required>
+                        <small class="form-text text-muted">Nota: La contraseña debe tener al menos 6 caracteres.</small>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
                 </form>
+                
+                <script>
+                    document.getElementById('registerForm').addEventListener('submit', async (event) => {
+                        event.preventDefault(); // Evita el envío estándar del formulario
+                
+                        // Recopila los datos del formulario
+                        const formData = new FormData(event.target);
+                        const data = Object.fromEntries(formData.entries()); // Convierte FormData a un objeto JSON
+                
+                        try {
+                            // Envía los datos en formato JSON al backend
+                            const response = await fetch('{{ url_for("auth.api_register") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(data), // Convierte el objeto a JSON
+                            });
+                
+                            const result = await response.json(); // Procesa la respuesta como JSON
+                
+                            if (response.ok) {
+                                alert(result.message || 'Usuario registrado exitosamente.');
+                                window.location.href = '{{ url_for("auth.login") }}'; // Redirige al login tras un registro exitoso
+                            } else {
+                                alert(result.message || 'Error al registrar el usuario.');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Ocurrió un error en la solicitud.');
+                        }
+                    });
+                </script>             
+
                 <p class="font-weight-bold text-center text-muted">Conoce más del proyecto aquí</p>
                 <div class="d-flex justify-content-around">
-                    <button type="button" class="btn btn-outline-light flex-grow-1 mr-2"><i class="fab fa-google lead"></i>Diapositivas</button>
-                    <button type="button" class="btn btn-outline-light flex-grow-1 ml-2"><i class="fab fa-facebook-f lead"></i>Repositorio</button>
+                    <a href="#" class="btn btn-outline-light flex-grow-1 mr-2"><i class="fab fa-google lead"></i> Diapositivas</a>
+                    <a href="#" class="btn btn-outline-light flex-grow-1 ml-2"><i class="fab fa-facebook-f lead"></i> Repositorio</a>
                 </div>
             </div>
             <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 mt-auto w-100">
-                <p class="d-inline-block mb-0">¿Ya tienes una cuenta?</p> <a href="{{ url_for('main.login') }}" class="text-light font-weight-bold text-decoration-none">Inicia sesión ahora</a>
+                <p class="d-inline-block mb-0">¿Ya tienes una cuenta?</p> <a href="{{ url_for('auth.login') }}" class="text-light font-weight-bold text-decoration-none">Inicia sesión ahora</a>
             </div>
         </div>
     </div>

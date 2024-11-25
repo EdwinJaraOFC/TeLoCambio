@@ -48,18 +48,50 @@
             </div>
             <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
                 <h1 class="font-weight-bold mb-4">TeLoCambio - Login</h1>
-                <form class="mb-5">
+                
+                <form id="loginForm" class="mb-5">
                     <div class="mb-4">
-                        <label for="exampleInputEmail1" class="form-label font-weight-bold">Usuario</label>
-                        <input type="email" class="form-control bg-dark-x border-0" id="exampleInputEmail1" placeholder="Ingresa tu usuario" aria-describedby="emailHelp">
+                        <label for="username" class="form-label font-weight-bold">Usuario</label>
+                        <input type="text" name="username" id="username" class="form-control bg-dark-x border-0"
+                               placeholder="Ingresa tu nombre de usuario" required>
                     </div>
                     <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label font-weight-bold">Contraseña</label>
-                        <input type="password" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa tu contraseña" id="exampleInputPassword1">
-                        <a href="" id="emailHelp" class="form-text text-muted text-decoration-none">Nota: Recuerda anotar tu contraseña en un lugar seguro</a>
+                        <label for="password" class="form-label font-weight-bold">Contraseña</label>
+                        <input type="password" name="password" id="password" class="form-control bg-dark-x border-0 mb-2"
+                               placeholder="Ingresa tu contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                 </form>
+                
+                <script>
+                    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+                        event.preventDefault();
+                    
+                        const formData = new FormData(event.target);
+                        const data = Object.fromEntries(formData.entries());
+                    
+                        try {
+                            const response = await fetch('{{ url_for("auth.api_login") }}', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data),
+                            });
+                    
+                            const result = await response.json();
+                    
+                            if (response.ok) {
+                                alert(result.message || 'Inicio de sesión exitoso.');
+                                window.location.href = '{{ url_for("main.home") }}';  // Redirige directamente al home
+                            } else {
+                                alert(result.message || 'Error al iniciar sesión.');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Ocurrió un error en la solicitud.');
+                        }
+                    });
+                </script>
+                
                 <p class="font-weight-bold text-center text-muted">Conoce más del proyecto aquí</p>
                 <div class="d-flex justify-content-around">
                     <button type="button" class="btn btn-outline-light flex-grow-1 mr-2"><i class="fab fa-google lead"></i>Diapositivas</button>
@@ -67,7 +99,7 @@
                 </div>
             </div>
             <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 mt-auto w-100">
-                <p class="d-inline-block mb-0">¿Todavia no tienes una cuenta?</p> <a href="{{ url_for('main.register') }}" class="text-light font-weight-bold text-decoration-none">Crea una ahora</a>
+                <p class="d-inline-block mb-0">¿Todavia no tienes una cuenta?</p> <a href="{{ url_for('auth.register') }}" class="text-light font-weight-bold text-decoration-none">Crea una ahora</a>
             </div>
         </div>
     </div>
