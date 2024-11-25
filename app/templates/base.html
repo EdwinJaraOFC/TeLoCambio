@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico')}}" type="image/x-icon">
+
+    {% block styles %}
+    <!-- Bloque intercambiable de CSS -->
+    {% endblock %}
+
+    <title>{% block title %}<!-- Bloque intercambiable de Título -->{% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    <!-- Contenido dinámico de cada página -->
+    {% endblock %}
+
+    <!-- Bloque intercambiable de JavaScript -->
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
