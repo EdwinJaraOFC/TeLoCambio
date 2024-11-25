@@ -63,35 +63,6 @@
                     <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                 </form>
                 
-                <script>
-                    document.getElementById('loginForm').addEventListener('submit', async (event) => {
-                        event.preventDefault();
-                    
-                        const formData = new FormData(event.target);
-                        const data = Object.fromEntries(formData.entries());
-                    
-                        try {
-                            const response = await fetch('{{ url_for("auth.api_login") }}', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(data),
-                            });
-                    
-                            const result = await response.json();
-                    
-                            if (response.ok) {
-                                alert(result.message || 'Inicio de sesión exitoso.');
-                                window.location.href = '{{ url_for("main.home") }}';  // Redirige directamente al home
-                            } else {
-                                alert(result.message || 'Error al iniciar sesión.');
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
-                            alert('Ocurrió un error en la solicitud.');
-                        }
-                    });
-                </script>
-                
                 <p class="font-weight-bold text-center text-muted">Conoce más del proyecto aquí</p>
                 <div class="d-flex justify-content-around">
                     <button type="button" class="btn btn-outline-light flex-grow-1 mr-2"><i class="fab fa-google lead"></i>Diapositivas</button>
@@ -110,4 +81,5 @@
 <!-- Popper.js first, then Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
