@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}TeLoCambio - Crear Cuenta{% endblock %}
+{% block title %}TeLoCambio - Registrar Datos{% endblock %}
 {% block styles %}
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
@@ -47,7 +47,7 @@
                 <img src="/static/img/logo.png" class="img-fluid" />
             </div>
             <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
-                <h1 class="font-weight-bold mb-4">TeLoCambio: Regístrate</h1>
+                <h1 class="font-weight-bold mb-4">TeLoCambio: Tus Datos</h1>
 
                 <!-- Mostrar mensajes dinámicos -->
                 {% if message %}
@@ -57,29 +57,32 @@
                 {% endif %}
 
                 <!-- Formulario de registro -->
-                <form id="registerForm" class="mb-5">
+                <form id="informationForm" class="mb-5">
                     <div class="mb-4">
-                        <label for="username" class="form-label font-weight-bold">Nombre de usuario</label>
-                        <input type="text" name="username" id="username" class="form-control bg-dark-x border-0"
-                               placeholder="Ingresa tu nombre de usuario" required>
+                        <label for="dni" class="form-label font-weight-bold">DNI</label>
+                        <input type="text" name="dni" id="dni" class="form-control bg-dark-x border-0"
+                               placeholder="Ingresa tu DNI" minlength="8" maxlength="8" required>
                     </div>
                     <div class="mb-4">
-                        <label for="password" class="form-label font-weight-bold">Contraseña</label>
-                        <input type="password" name="password" id="password" class="form-control bg-dark-x border-0 mb-2"
-                               placeholder="Ingresa tu contraseña" minlength="6" required>
-                        <small class="form-text text-muted">Nota: La contraseña debe tener al menos 6 caracteres.</small>
+                        <label for="nombre" class="form-label font-weight-bold">Nombre</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control bg-dark-x border-0"
+                               placeholder="Ingresa tu nombre completo" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+                    <div class="mb-4">
+                        <label for="fechaNacimiento" class="form-label font-weight-bold">Fecha de Nacimiento</label>
+                        <input type="date" name="fechaNacimiento" id="fechaNacimiento" class="form-control bg-dark-x border-0"
+                               required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="correoElectronico" class="form-label font-weight-bold">Correo Electrónico</label>
+                        <input type="email" name="correoElectronico" id="correoElectronico" class="form-control bg-dark-x border-0"
+                               placeholder="Ingresa tu correo electrónico" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Registrar Datos</button>
                 </form>
             
-                <p class="font-weight-bold text-center text-muted">Conoce más del proyecto aquí</p>
-                <div class="d-flex justify-content-around">
-                    <a href="#" class="btn btn-outline-light flex-grow-1 mr-2"><i class="fab fa-google lead"></i> Diapositivas</a>
-                    <a href="#" class="btn btn-outline-light flex-grow-1 ml-2"><i class="fab fa-facebook-f lead"></i> Repositorio</a>
-                </div>
-            </div>
             <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 mt-auto w-100">
-                <p class="d-inline-block mb-0">¿Ya tienes una cuenta?</p> <a href="{{ url_for('auth.login') }}" class="text-light font-weight-bold text-decoration-none">Inicia sesión ahora</a>
+                <p class="d-inline-block mb-0">&copy; {{ current_year }} TeLoCambio. Todos los derechos reservados.</p>
             </div>
         </div>
     </div>
@@ -90,5 +93,5 @@
 <!-- Popper.js first, then Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
-<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+<script src="{{ url_for('static', filename='js/information.js') }}"></script>
 {% endblock %}

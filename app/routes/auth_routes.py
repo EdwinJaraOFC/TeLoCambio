@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash
+from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required
 from app.models.user import UserModel
 
@@ -19,7 +19,12 @@ def api_register():
 
         # Crear usuario
         result = UserModel.create_user(username, password)
-        return jsonify(result), (201 if result['success'] else 400)
+        if result['success']:
+            # Guardar el username en la sesión
+            session['username'] = username
+            return jsonify(result), 201
+        else:
+            return jsonify(result), 400
     except Exception as e:
         return jsonify({'success': False, 'message': 'Error interno del servidor.', 'error': str(e)}), 500
 
