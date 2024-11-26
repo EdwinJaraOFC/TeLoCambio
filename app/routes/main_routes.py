@@ -17,4 +17,5 @@ def index():
 @login_required
 def dashboard():
     """Página principal para usuarios autenticados"""
-    return render_template('dashboard.html')  # Renderiza el archivo dashboard.html
+    current_year = datetime.now().year  # Obtiene el año actual
+    return render_template('dashboard.html', current_year=current_year)  # Renderiza el archivo dashboard.html

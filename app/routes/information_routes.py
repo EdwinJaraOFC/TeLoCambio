@@ -45,7 +45,7 @@ def api_information():
 def information():
     """Página para registrar información personal"""
     # Verificar que existe un ID temporal en la sesión
-    if not session.get('temp_user_id'):
+    if not session.get('username'):
         return redirect(url_for('auth.register'))  # Redirigir al registro si no hay acceso autorizado
 
     return render_template('information.html')  # Renderiza la página de información personal
