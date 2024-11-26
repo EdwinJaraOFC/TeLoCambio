@@ -12,9 +12,9 @@ def index():
     current_year = datetime.now().year  # Obtiene el año actual
     return render_template('index.html', current_year=current_year)  # Renderiza el archivo index.html
 
-# Ruta Home (Autenticada)
-@main_bp.route('/home')
+# Ruta dashboard (Autenticada)
+@main_bp.route('/dashboard')
 @login_required
-def home():
+def dashboard():
     """Página principal para usuarios autenticados"""
-    return render_template('home.html')  # Renderiza el archivo home.html
+    return render_template('dashboard.html')  # Renderiza el archivo dashboard.html

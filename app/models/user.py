@@ -3,7 +3,6 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.database import get_db_connection
 
-
 class UserModel(UserMixin):
     def __init__(self, id, username, password):
         self.id = id

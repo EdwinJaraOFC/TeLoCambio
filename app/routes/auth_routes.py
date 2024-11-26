@@ -98,7 +98,7 @@ def login():
             next_page = request.args.get('next')  # Obtiene el valor de `next`
             if next_page:
                 return redirect(next_page)
-            return redirect(url_for('main.home'))  # Si no hay `next`, redirige al home
+            return redirect(url_for('main.dashboard'))  # Si no hay `next`, redirige al dashboard
         else:
             flash(result['message'], 'danger')
             return render_template('login.html')
