@@ -1,11 +1,11 @@
-document.getElementById('informationForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Previene el comportamiento predeterminado del formulario
+document.getElementById('directionForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Previene el envío predeterminado del formulario
 
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries()); // Convierte FormData a JSON
 
     try {
-        const response = await fetch('/auth/api/information', {
+        const response = await fetch('/auth/api/direction', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data), // Envía los datos como JSON
@@ -14,10 +14,10 @@ document.getElementById('informationForm').addEventListener('submit', async (eve
         const result = await response.json(); // Procesa la respuesta como JSON
 
         if (response.ok) {
-            alert(result.message || 'Información registrada exitosamente.');
-            window.location.href = '/auth/direction'; // Redirige al login tras registro exitoso
+            alert(result.message || 'Dirección registrada exitosamente.');
+            window.location.href = '/auth/hobbies'; // Redirige a hobbies.html tras registro exitoso
         } else {
-            alert(result.message || 'Error al registrar la información.');
+            alert(result.message || 'Error al registrar la dirección.');
         }
     } catch (error) {
         console.error('Error:', error);

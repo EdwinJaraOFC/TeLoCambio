@@ -32,6 +32,9 @@ def api_register():
 def api_login():
     """API para iniciar sesión"""
     try:
+        # Limpia cualquier valor previo en session['username']
+        session.pop('username', None)
+        
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
@@ -45,6 +48,7 @@ def api_login():
         if result['success']:
             user = result['user']
             login_user(user)  # Inicia sesión con Flask-Login
+            session['username'] = username
             return jsonify({'success': True, 'message': 'Inicio de sesión exitoso.'}), 200
         else:
             return jsonify(result), 401
@@ -110,5 +114,6 @@ def login():
 def logout():
     """Cierra la sesión del usuario"""
     logout_user()  # Cierra la sesión
+    session.pop('username', None)  # Limpia el username de la sesión manualmente
     flash('Has cerrado sesión exitosamente.', 'info')
     return redirect(url_for('auth.login'))

@@ -34,7 +34,6 @@ def api_information():
 
         if result['success']:
             # Limpiar el username de la sesión después de registrar la información
-            session.pop('username', None)
             return jsonify({'success': True, 'message': 'Información registrada exitosamente.'}), 201
         else:
             return jsonify({'success': False, 'message': result['message']}), 400
