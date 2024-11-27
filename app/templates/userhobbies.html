@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}TeLoCambio - Objetos Disponibles{% endblock %}
+{% block title %}TeLoCambio - Mis Gustos{% endblock %}
 
 {% block styles %}
 <!-- Favicon -->
@@ -248,53 +248,52 @@
     <!-- Main content -->
     <main class="main users chart-page" id="skip-target">
       <div class="container">
-        <h2 class="main-title">Objetos Disponibles</h2>
+        <h2 class="main-title">Mis Gustos y Hobbies</h2>
         <div class="users-table table-wrapper">
           <table class="posts-table">
             <thead>
               <tr class="users-table-info">
                 <th>
                   <label class="users-table__checkbox ms-20">
-                    <input type="checkbox" class="check-all">idObjeto
+                    <input type="checkbox" class="check-all">Pasatiempos
                   </label>
                 </th>
-                <th>Imagen</th>
-                <th>ID Dueño</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th>Gustos Musicales</th>
+                <th>Películas Favoritas</th>
               </tr>
             </thead>
             <tbody>
-              {% for objeto in objetos %}
               <tr>
                 <td>
                   <label class="users-table__checkbox">
-                    <input type="checkbox" class="check">{{ objeto.idObjeto }}
+                    <input type="checkbox" class="check">{{ user_hobbies.Pasatiempos }}
                   </label>
                 </td>
-                <td>
-                  <div class="categories-table-img">
-                    <a href="{{ objeto.URL_Imagen }}" target="_blank">
-                      <picture><img src="{{ objeto.URL_Imagen }}" alt="Objeto"></picture>
-                    </a>
-                  </div>
-                </td>
-                <td>{{ objeto.idPersona }}</td>
-                <td>{{ objeto.Nombre }}</td>
-                <td>{{ objeto.Descripcion }}</td>
-                <td><span class="badge-{{ 'active' if objeto.Estado == 'Disponible' else 'pending' }}">{{ objeto.Estado }}</span></td>
-                <td>
-                  <span class="p-relative">
-                    <a href="{{ url_for('exchange.apply_exchange', id_objeto=objeto.idObjeto) }}" class="btn btn-primary">Solicitar Intercambio</a>
-                  </span>
-                </td>
+                <td>{{ user_hobbies.GustosMusicales }}</td>
+                <td>{{ user_hobbies.PeliculasFavoritas }}</td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
+
+        <!-- Formulario para editar los gustos debajo de la tabla -->
+        <h3 class="form-label">¿Quieres editar tus gustos y hobbies?</h3>
+        <form action="{{ url_for('userhobbies.api_edit_user_hobbies') }}" method="POST">
+          <div class="mb-3">
+            <label for="pasatiempos" class="form-label">Pasatiempos:</label>
+            <input type="text" class="form-control" id="pasatiempos" name="pasatiempos" value="{{ user_hobbies.Pasatiempos }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="gustos_musicales" class="form-label">Gustos Musicales:</label>
+            <input type="text" class="form-control" id="gustos_musicales" name="gustos_musicales" value="{{ user_hobbies.GustosMusicales }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="peliculas_favoritas" class="form-label">Películas Favoritas:</label>
+            <input type="text" class="form-control" id="peliculas_favoritas" name="peliculas_favoritas" value="{{ user_hobbies.PeliculasFavoritas }}" required><br><br>
+          </div>
+          <button type="submit" class="btn btn-primary">Editar Gustos</button>
+        </form>
+
       </div>
     </main>
   <!-- ! Footer -->

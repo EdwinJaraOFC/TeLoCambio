@@ -88,3 +88,61 @@ def api_get_objects_not_by_user():
         return jsonify({'success': True, 'data': result['data']}), 200
     else:
         return jsonify({'success': False, 'message': result['message']}), 400
+
+# Ruta para manejar el formulario de agregar objeto
+@object_bp.route('/api/add-object', methods=['POST'])
+def api_add_object():
+    """API para agregar un nuevo objeto."""
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('auth.login'))  # Redirigir si no hay sesión activa
+
+    # Obtener los datos del formulario
+    nombre = request.form['nombre']
+    descripcion = request.form['descripcion']
+    url_imagen = request.form['url_imagen']
+    url_video = request.form.get('url_video')  # URL Video es opcional
+
+    # Crear el nuevo objeto en la base de datos
+    result = ObjectModel.add_object(username, nombre, descripcion, url_imagen, url_video)
+
+    if result['success']:
+        # Redirigir a la página de objetos disponibles
+        return redirect(url_for('object.my_objects'))
+    else:
+        # Mostrar error si algo falla
+        return render_template('add_object.html', error=result['message'])
+
+# Ruta para agregar un objeto (mostrar formulario)
+@object_bp.route('/add-object', methods=['GET'])
+def add_object_page():
+    """Página para agregar un nuevo objeto."""
+    return render_template('addobjects.html')
+
+# Ruta para editar un objeto
+@object_bp.route('/api/edit/<int:idObjeto>', methods=['GET', 'POST'])
+def api_edit_object(idObjeto):
+    if request.method == 'GET':
+        # Obtener el objeto con el idObjeto
+        result = ObjectModel.get_object_by_id(idObjeto)
+        
+        if not result['success']:
+            return redirect(url_for('object.my_objects'))  # Si no se encuentra el objeto, redirigir
+        
+        # Pasa los datos del objeto al formulario de edición
+        return render_template('edit_object.html', objeto=result['data'])
+    
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
+        url_imagen = request.form['url_imagen']
+        url_video = request.form['url_video']
+        
+        # Actualizar el objeto
+        result = ObjectModel.update_object(idObjeto, nombre, descripcion, url_imagen, url_video)
+        
+        if result['success']:
+            return redirect(url_for('object.my_objects'))  # Redirigir después de editar
+        else:
+            return render_template('edit_object.html', error=result['message'], objeto=request.form)

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}TeLoCambio - Objetos Disponibles{% endblock %}
+{% block title %}TeLoCambio - Mi Información{% endblock %}
 
 {% block styles %}
 <!-- Favicon -->
@@ -248,53 +248,58 @@
     <!-- Main content -->
     <main class="main users chart-page" id="skip-target">
       <div class="container">
-        <h2 class="main-title">Objetos Disponibles</h2>
+        <h2 class="main-title">Mi Información Personal</h2>
         <div class="users-table table-wrapper">
           <table class="posts-table">
             <thead>
               <tr class="users-table-info">
                 <th>
                   <label class="users-table__checkbox ms-20">
-                    <input type="checkbox" class="check-all">idObjeto
+                    <input type="checkbox" class="check-all">DNI
                   </label>
                 </th>
-                <th>Imagen</th>
-                <th>ID Dueño</th>
                 <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Correo Electrónico</th>
+                <th>Puntuación Promedio</th>
               </tr>
             </thead>
             <tbody>
-              {% for objeto in objetos %}
               <tr>
                 <td>
                   <label class="users-table__checkbox">
-                    <input type="checkbox" class="check">{{ objeto.idObjeto }}
+                    <input type="checkbox" class="check">{{ user_info.DNI }}
                   </label>
                 </td>
-                <td>
-                  <div class="categories-table-img">
-                    <a href="{{ objeto.URL_Imagen }}" target="_blank">
-                      <picture><img src="{{ objeto.URL_Imagen }}" alt="Objeto"></picture>
-                    </a>
-                  </div>
-                </td>
-                <td>{{ objeto.idPersona }}</td>
-                <td>{{ objeto.Nombre }}</td>
-                <td>{{ objeto.Descripcion }}</td>
-                <td><span class="badge-{{ 'active' if objeto.Estado == 'Disponible' else 'pending' }}">{{ objeto.Estado }}</span></td>
-                <td>
-                  <span class="p-relative">
-                    <a href="{{ url_for('exchange.apply_exchange', id_objeto=objeto.idObjeto) }}" class="btn btn-primary">Solicitar Intercambio</a>
-                  </span>
-                </td>
+                <td>{{ user_info.Nombre }}</td>
+                <td>{{ user_info.FechaNacimiento }}</td>
+                <td>{{ user_info.DireccionCorreo }}</td>
+                <td>{{ user_info.PuntuacionPromedio }}</td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
+        <!-- Formulario para editar la información personal debajo de la tabla -->
+        <h3 class="form-label">¿Quieres editar tu información personal?</h3>
+        <form action="{{ url_for('userinfo.api_edit_user_info') }}" method="POST">
+          <div class="mb-3">
+            <label for="dni" class="form-label">DNI:</label>
+            <input type="text" class="form-control" id="dni" name="dni" value="{{ user_info.DNI }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user_info.Nombre }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ user_info.FechaNacimiento }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="correo_electronico" class="form-label">Correo Electrónico:</label>
+            <input type="email" class="form-control" id="correo_electronico" name="correo_electronico" value="{{ user_info.DireccionCorreo }}" required><br><br>
+          </div>
+          <button type="submit" class="btn btn-primary">Editar Información</button>
+        </form>
       </div>
     </main>
   <!-- ! Footer -->

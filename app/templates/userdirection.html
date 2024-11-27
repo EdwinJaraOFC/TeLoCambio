@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}TeLoCambio - Objetos Disponibles{% endblock %}
+{% block title %}TeLoCambio - Mi Dirección{% endblock %}
 
 {% block styles %}
 <!-- Favicon -->
@@ -248,53 +248,56 @@
     <!-- Main content -->
     <main class="main users chart-page" id="skip-target">
       <div class="container">
-        <h2 class="main-title">Objetos Disponibles</h2>
+        <h2 class="main-title">Mi Dirección</h2>
         <div class="users-table table-wrapper">
           <table class="posts-table">
             <thead>
               <tr class="users-table-info">
                 <th>
                   <label class="users-table__checkbox ms-20">
-                    <input type="checkbox" class="check-all">idObjeto
+                    <input type="checkbox" class="check-all">Dirección
                   </label>
                 </th>
-                <th>Imagen</th>
-                <th>ID Dueño</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th>Departamento</th>
+                <th>Provincia</th>
+                <th>Distrito</th>
               </tr>
             </thead>
             <tbody>
-              {% for objeto in objetos %}
               <tr>
                 <td>
                   <label class="users-table__checkbox">
-                    <input type="checkbox" class="check">{{ objeto.idObjeto }}
+                    <input type="checkbox" class="check">{{ user_direction.Direccion }}
                   </label>
                 </td>
-                <td>
-                  <div class="categories-table-img">
-                    <a href="{{ objeto.URL_Imagen }}" target="_blank">
-                      <picture><img src="{{ objeto.URL_Imagen }}" alt="Objeto"></picture>
-                    </a>
-                  </div>
-                </td>
-                <td>{{ objeto.idPersona }}</td>
-                <td>{{ objeto.Nombre }}</td>
-                <td>{{ objeto.Descripcion }}</td>
-                <td><span class="badge-{{ 'active' if objeto.Estado == 'Disponible' else 'pending' }}">{{ objeto.Estado }}</span></td>
-                <td>
-                  <span class="p-relative">
-                    <a href="{{ url_for('exchange.apply_exchange', id_objeto=objeto.idObjeto) }}" class="btn btn-primary">Solicitar Intercambio</a>
-                  </span>
-                </td>
+                <td>{{ user_direction.Departamento }}</td>
+                <td>{{ user_direction.Provincia }}</td>
+                <td>{{ user_direction.Distrito }}</td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
+        <!-- Formulario para editar la dirección debajo de la tabla -->
+        <h3 class="form-label">¿Quieres editar tu dirección?</h3>
+        <form action="{{ url_for('userdirection.api_edit_user_direction') }}" method="POST">
+          <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección:</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" value="{{ user_direction.Direccion }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="departamento" class="form-label">Departamento:</label>
+            <input type="text" class="form-control" id="departamento" name="departamento" value="{{ user_direction.Departamento }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="provincia" class="form-label">Provincia:</label>
+            <input type="text" class="form-control" id="provincia" name="provincia" value="{{ user_direction.Provincia }}" required><br><br>
+          </div>
+          <div class="mb-3">
+            <label for="distrito" class="form-label">Distrito:</label>
+            <input type="text" class="form-control" id="distrito" name="distrito" value="{{ user_direction.Distrito }}" required><br><br>
+          </div>
+          <button type="submit" class="btn btn-primary">Editar Dirección</button>
+        </form>
       </div>
     </main>
   <!-- ! Footer -->

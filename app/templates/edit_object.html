@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}TeLoCambio - Objetos Disponibles{% endblock %}
+{% block title %}TeLoCambio - Mis Objetos{% endblock %}
 
 {% block styles %}
 <!-- Favicon -->
@@ -248,54 +248,37 @@
     <!-- Main content -->
     <main class="main users chart-page" id="skip-target">
       <div class="container">
-        <h2 class="main-title">Objetos Disponibles</h2>
-        <div class="users-table table-wrapper">
-          <table class="posts-table">
-            <thead>
-              <tr class="users-table-info">
-                <th>
-                  <label class="users-table__checkbox ms-20">
-                    <input type="checkbox" class="check-all">idObjeto
-                  </label>
-                </th>
-                <th>Imagen</th>
-                <th>ID Dueño</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for objeto in objetos %}
-              <tr>
-                <td>
-                  <label class="users-table__checkbox">
-                    <input type="checkbox" class="check">{{ objeto.idObjeto }}
-                  </label>
-                </td>
-                <td>
-                  <div class="categories-table-img">
-                    <a href="{{ objeto.URL_Imagen }}" target="_blank">
-                      <picture><img src="{{ objeto.URL_Imagen }}" alt="Objeto"></picture>
-                    </a>
-                  </div>
-                </td>
-                <td>{{ objeto.idPersona }}</td>
-                <td>{{ objeto.Nombre }}</td>
-                <td>{{ objeto.Descripcion }}</td>
-                <td><span class="badge-{{ 'active' if objeto.Estado == 'Disponible' else 'pending' }}">{{ objeto.Estado }}</span></td>
-                <td>
-                  <span class="p-relative">
-                    <a href="{{ url_for('exchange.apply_exchange', id_objeto=objeto.idObjeto) }}" class="btn btn-primary">Solicitar Intercambio</a>
-                  </span>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+        <h2 class="main-title">Editar Objeto: {{ objeto.Nombre }}</h2>
       </div>
+    
+      <!-- Mostrar el error si no se pudo actualizar -->
+      {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+      
+      <form action="{{ url_for('object.api_edit_object', idObjeto=objeto.idObjeto) }}" method="POST">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" value="{{ objeto.Nombre }}" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="descripcion" class="form-label">Descripción:</label>
+          <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ objeto.Descripcion }}</textarea>
+        </div>
+        
+        <div class="mb-3">
+          <label for="url_imagen" class="form-label">URL de la imagen:</label>
+          <input type="text" class="form-control" id="url_imagen" name="url_imagen" value="{{ objeto.URL_Imagen }}" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="url_video" class="form-label">URL del video:</label>
+          <input type="text" class="form-control" id="url_video" name="url_video" value="{{ objeto.URL_Video }}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Actualizar Objeto</button>
+      </form>
     </main>
   <!-- ! Footer -->
   <footer class="footer">
@@ -321,4 +304,6 @@
 <script src="{{ url_for('static', filename='plugins/feather.min.js') }}"></script>
 <!-- Custom scripts -->
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<!-- Objects script -->
+<script src="{{ url_for('static', filename='js/objects.js') }}"></script>
 {% endblock %}

@@ -29,4 +29,3 @@ class InformationModel:
             return {'success': False, 'message': 'Error al registrar la información.', 'error': str(e)}
         finally:
             conn.close()
-

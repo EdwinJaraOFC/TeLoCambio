@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}TeLoCambio - Objetos Disponibles{% endblock %}
+{% block title %}TeLoCambio - Intercambios{% endblock %}
 
 {% block styles %}
 <!-- Favicon -->
@@ -248,48 +248,38 @@
     <!-- Main content -->
     <main class="main users chart-page" id="skip-target">
       <div class="container">
-        <h2 class="main-title">Objetos Disponibles</h2>
+        <h2 class="main-title">Todos los Intercambios</h2>
         <div class="users-table table-wrapper">
           <table class="posts-table">
             <thead>
               <tr class="users-table-info">
                 <th>
                   <label class="users-table__checkbox ms-20">
-                    <input type="checkbox" class="check-all">idObjeto
+                    <input type="checkbox" class="check-all">idIntercambio
                   </label>
                 </th>
-                <th>Imagen</th>
-                <th>ID Dueño</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
+                <th>Persona 1</th>
+                <th>Objeto 1</th>
+                <th>Persona 2</th>
+                <th>Objeto 2</th>
+                <th>Fecha</th>
                 <th>Estado</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {% for objeto in objetos %}
+              {% for intercambio in intercambios %}
               <tr>
                 <td>
                   <label class="users-table__checkbox">
-                    <input type="checkbox" class="check">{{ objeto.idObjeto }}
+                    <input type="checkbox" class="check">{{ intercambio.idIntercambio }}
                   </label>
                 </td>
-                <td>
-                  <div class="categories-table-img">
-                    <a href="{{ objeto.URL_Imagen }}" target="_blank">
-                      <picture><img src="{{ objeto.URL_Imagen }}" alt="Objeto"></picture>
-                    </a>
-                  </div>
-                </td>
-                <td>{{ objeto.idPersona }}</td>
-                <td>{{ objeto.Nombre }}</td>
-                <td>{{ objeto.Descripcion }}</td>
-                <td><span class="badge-{{ 'active' if objeto.Estado == 'Disponible' else 'pending' }}">{{ objeto.Estado }}</span></td>
-                <td>
-                  <span class="p-relative">
-                    <a href="{{ url_for('exchange.apply_exchange', id_objeto=objeto.idObjeto) }}" class="btn btn-primary">Solicitar Intercambio</a>
-                  </span>
-                </td>
+                <td>{{ intercambio.idPersona1 }}</td>
+                <td>{{ intercambio.idObjeto1 }}</td>
+                <td>{{ intercambio.idPersona2 }}</td>
+                <td>{{ intercambio.idObjeto2 }}</td>
+                <td>{{ intercambio.Fecha }}</td>
+                <td><span class="badge-{{ 'active' if intercambio.Estado == 'Completado' else 'pending' }}">{{ intercambio.Estado }}</span></td>
               </tr>
               {% endfor %}
             </tbody>
@@ -321,4 +311,6 @@
 <script src="{{ url_for('static', filename='plugins/feather.min.js') }}"></script>
 <!-- Custom scripts -->
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<!-- Objects script -->
+<script src="{{ url_for('static', filename='js/objects.js') }}"></script>
 {% endblock %}
