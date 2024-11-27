@@ -2,6 +2,7 @@ import pymysql
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.database import get_db_connection
+from app.database import get_neo4j_connection  # Usamos la conexión a Neo4j
 
 class UserModel(UserMixin):
     def __init__(self, id, username, password):
@@ -11,7 +12,7 @@ class UserModel(UserMixin):
 
     @staticmethod
     def create_user(username, password):
-        """Crea un nuevo usuario en la base de datos"""
+        """Crea un nuevo usuario en MySQL y en Neo4j"""
         if not username or not password:
             return {'success': False, 'message': 'El nombre de usuario y la contraseña son obligatorios.'}
 
@@ -27,20 +28,45 @@ class UserModel(UserMixin):
                 # Hashear la contraseña
                 hashed_password = generate_password_hash(password)
 
-                # Insertar el nuevo usuario
+                # Insertar el nuevo usuario en MySQL
                 cursor.execute(
                     "INSERT INTO usuarios (username, password) VALUES (%s, %s)",
                     (username, hashed_password)
                 )
                 conn.commit()
 
-            return {'success': True, 'message': 'Usuario creado exitosamente.'}
+                # Obtener el id del usuario recién insertado
+                cursor.execute("SELECT idUsuario FROM usuarios WHERE username = %s", (username,))
+                user = cursor.fetchone()
+                user_id = user['idUsuario']
+
+                # Crear el nodo de usuario en Neo4j
+                UserModel.create_user_node_in_neo4j(user_id, username)  # Llamada para crear el nodo en Neo4j
+
+            return {'success': True, 'message': 'Usuario y nodo creado exitosamente.'}
         except pymysql.MySQLError as e:
-            print(f"Error en la base de datos: {str(e)}")
-            return {'success': False, 'message': 'Error en la base de datos.', 'error': str(e)}
+            print(f"Error en la base de datos MySQL: {str(e)}")
+            return {'success': False, 'message': 'Error en la base de datos MySQL.', 'error': str(e)}
         finally:
             if conn and conn.open:
                 conn.close()
+
+    @staticmethod
+    def create_user_node_in_neo4j(user_id, username):
+        """Crea un nodo de Usuario en Neo4j"""
+        conn = get_neo4j_connection()  # Conexión a Neo4j
+        try:
+            query = """
+            CREATE (u:User {id: $user_id, username: $username})
+            """
+            parameters = {'user_id': user_id, 'username': username}
+            # Ejecutar la consulta para crear el nodo en Neo4j
+            conn.execute_query(query, parameters)
+            print(f"Nodo de usuario con id {user_id} y username {username} creado en Neo4j.")
+        except Exception as e:
+            print(f"Error al crear el nodo de usuario en Neo4j: {e}")
+        finally:
+            conn.close()
 
     @staticmethod
     def get_user_by_username(username):

@@ -34,7 +34,7 @@ def api_hobbies():
         if not pasatiempos or not gustos_musicales or not peliculas_favoritas:
             return jsonify({'success': False, 'message': 'Todos los campos son obligatorios.'}), 400
 
-        # Guardar los gustos en la base de datos
+        # Guardar los gustos en la base de datos y crear el nodo en Neo4j
         result = HobbiesModel.create_hobbies(username, pasatiempos, gustos_musicales, peliculas_favoritas)
         if result['success']:
             # Si se guarda correctamente, redirigir al login

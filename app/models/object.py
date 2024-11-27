@@ -129,7 +129,8 @@ class ObjectModel:
         except Exception as e:
             return {'success': False, 'message': str(e)}
         finally:
-            conn.close()
+            if conn and conn.open:
+                conn.close()
 
     # Actualizar un objeto
     @staticmethod
@@ -147,7 +148,8 @@ class ObjectModel:
         except Exception as e:
             return {'success': False, 'message': str(e)}
         finally:
-            conn.close()
+            if conn and conn.open:
+                conn.close()
 
     @staticmethod
     def get_object_by_id(id_objeto):

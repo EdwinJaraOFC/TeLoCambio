@@ -111,7 +111,7 @@ def api_add_object():
         return redirect(url_for('object.my_objects'))
     else:
         # Mostrar error si algo falla
-        return render_template('add_object.html', error=result['message'])
+        return render_template('addobjects.html', error=result['message'])
 
 # Ruta para agregar un objeto (mostrar formulario)
 @object_bp.route('/add-object', methods=['GET'])

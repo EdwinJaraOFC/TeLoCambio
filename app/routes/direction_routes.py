@@ -23,10 +23,10 @@ def api_direction():
         if not direccion or not departamento or not provincia or not distrito:
             return jsonify({'success': False, 'message': 'Todos los campos son obligatorios.'}), 400
 
-        # Guardar la dirección en la base de datos
+        # Guardar la dirección en la base de datos y crear el nodo en Neo4j
         result = DirectionModel.create_direction(username, direccion, departamento, provincia, distrito)
         if result['success']:
-            # Si se guarda correctamente, redirigir a la página de hobbies
+            # Si se guarda correctamente, redirigir a la página de hobbies o cualquier otra página relevante
             return jsonify({'success': True, 'message': result['message'], 'redirect': '/auth/hobbies'}), 201
         else:
             return jsonify({'success': False, 'message': result['message']}), 400
@@ -42,4 +42,4 @@ def direction():
         # Si no hay un usuario en sesión, redirige al registro
         return redirect(url_for('auth.register'))
     
-    return render_template('direction.html')
+    return render_template('direction.html')  # Renderiza la página para registrar la dirección

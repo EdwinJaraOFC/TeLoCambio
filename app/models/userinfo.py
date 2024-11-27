@@ -62,4 +62,5 @@ class UserInfoModel:
         except Exception as e:
             return {'success': False, 'message': str(e)}
         finally:
-            conn.close()
+            if conn and conn.open:
+                conn.close()

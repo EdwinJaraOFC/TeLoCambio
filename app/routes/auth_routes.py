@@ -9,7 +9,7 @@ auth_bp = Blueprint('auth', __name__)
 def api_register():
     """API para registrar un nuevo usuario"""
     try:
-        data = request.get_json()  # Leer datos JSON
+        data = request.get_json()  # Leer los datos de la solicitud JSON
         username = data.get('username')
         password = data.get('password')
 
@@ -17,14 +17,16 @@ def api_register():
         if not username or not password:
             return jsonify({'success': False, 'message': 'Faltan campos obligatorios.'}), 400
 
-        # Crear usuario
+        # Crear usuario en MySQL y crear su nodo en Neo4j
         result = UserModel.create_user(username, password)
+
         if result['success']:
-            # Guardar el username en la sesión
+            # Guardar el username en la sesión (si lo deseas)
             session['username'] = username
             return jsonify(result), 201
         else:
             return jsonify(result), 400
+
     except Exception as e:
         return jsonify({'success': False, 'message': 'Error interno del servidor.', 'error': str(e)}), 500
 
