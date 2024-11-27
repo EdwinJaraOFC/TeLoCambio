@@ -32,9 +32,6 @@ def api_register():
 def api_login():
     """API para iniciar sesión"""
     try:
-        # Limpia cualquier valor previo en session['username']
-        session.pop('username', None)
-        
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')

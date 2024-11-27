@@ -39,7 +39,8 @@ class UserModel(UserMixin):
             print(f"Error en la base de datos: {str(e)}")
             return {'success': False, 'message': 'Error en la base de datos.', 'error': str(e)}
         finally:
-            conn.close()
+            if conn and conn.open:
+                conn.close()
 
     @staticmethod
     def get_user_by_username(username):
@@ -55,15 +56,16 @@ class UserModel(UserMixin):
             print(f"Error al buscar el usuario: {e}")
             return None
         finally:
-            conn.close()
+            if conn and conn.open:
+                conn.close()
 
     @staticmethod
-    def get_user_by_id(user_id):
+    def get_user_by_id(id):
         """Busca un usuario por ID"""
         conn = get_db_connection()
         try:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM usuarios WHERE idUsuario = %s", (user_id,))
+                cursor.execute("SELECT * FROM usuarios WHERE idUsuario = %s", (id,))
                 user = cursor.fetchone()
                 if user:
                     return UserModel(user['idUsuario'], user['username'], user['password'])
@@ -71,7 +73,8 @@ class UserModel(UserMixin):
             print(f"Error al buscar el usuario por ID: {e}")
             return None
         finally:
-            conn.close()
+            if conn and conn.open:
+                conn.close()
 
     @staticmethod
     def authenticate_user(username, password):
