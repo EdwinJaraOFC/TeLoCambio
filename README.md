@@ -3,7 +3,7 @@
 **TeLoCambio** es una plataforma web para el **intercambio de objetos** entre usuarios.  
 Permite registrar, ofrecer y solicitar intercambios, además de incluir:  
 - Sistema de **valoraciones** de intercambios.  
-- **Notificaciones** sobre solicitudes y actualizaciones.  
+- **Notificaciones** sobre solicitudes y actualizaciones
 
 La plataforma combina **bases de datos relacionales y no relacionales**:  
 - **MySQL** para datos estructurados.  
