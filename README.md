@@ -20,7 +20,7 @@ También cuenta con una **API RESTful** para la gestión de usuarios y objetos.
 - **Base de datos no relacional**: Neo4j  
 - **Autenticación**: Flask-Login  
 - **Frontend**: HTML, CSS, Bootstrap  
-- **Pruebas**: unittest, pytest  
+- **Pruebas**: pytest  
 
 ---
 
